@@ -24,6 +24,9 @@ Usage
       // Do something with data
     });
 
+For api methods that allow for sentiment analysis such as Entity Extraction, Relations and Keywords pass:
+{"sentiment":1} as the second parameter.
+
 Tests
 -----
 To run tests type `npm test`
@@ -49,6 +52,33 @@ Sentiment Analysis
     var AlchemyAPI = require('alchemy-api');
     var alchemy = new AlchemyAPI('<YOUR API KEY>');
     alchemy.sentiment('<URL|HTML|TEXT>', {}, function(err, response) {
+      if (err) throw err;
+
+      // See http://www.alchemyapi.com/api/sentiment/htmlc.html for format of returned object
+      var sentiment = response.docSentiment;
+
+      // Do something with data
+    });
+
+Emotions
+------------------
+    var AlchemyAPI = require('alchemy-api');
+    var alchemy = new AlchemyAPI('<YOUR API KEY>');
+    alchemy.emotions('<URL|HTML|TEXT>', {}, function(err, response) {
+      if (err) throw err;
+
+      // See http://www.alchemyapi.com/api/html-api-1 for format of returned object
+      var emotions = response.docEmotions;
+
+      // Do something with data
+    });
+
+
+Targeted Sentiment Analysis
+------------------
+    var AlchemyAPI = require('alchemy-api');
+    var alchemy = new AlchemyAPI('<YOUR API KEY>');
+    alchemy.sentiment_targeted('<URL|HTML|TEXT>', '<Target>', {}, function(err, response) {
       if (err) throw err;
 
       // See http://www.alchemyapi.com/api/sentiment/htmlc.html for format of returned object
@@ -139,11 +169,24 @@ Image Tags/Keyword Extraction
 ---------------
     var AlchemyAPI = require('alchemy-api');
     var alchemy = new AlchemyAPI('<YOUR API KEY>');
-    alchemy.imageKeywords('<URL|HTML|TEXT>', {}, function(err, response) {
+    alchemy.imageKeywords('<URL|IMAGE>', {}, function(err, response) {
       if (err) throw err;
 
       // See http://www.alchemyapi.com/api/image-tagging/urls.html for format of returned object
       var imageKeywords = response.imageKeywords;
+
+      // Do something with data
+    });
+
+Image Faces Detection 
+---------------
+    var AlchemyAPI = require('alchemy-api');
+    var alchemy = new AlchemyAPI('<YOUR API KEY>');
+    alchemy.imageFaces('<URL|IMAGE>', {}, function(err, response) {
+      if (err) throw err;
+
+      // See http://www.alchemyapi.com/api/face-detection/urls.html for format of returned object
+      var imageFaces = response.imageFaces;
 
       // Do something with data
     });
@@ -237,4 +280,30 @@ Publication Date
       var publicationDate = response.publicationDate; //YYYYMMDDTHHMMSS string
 
       // Do something with data
+    });
+
+Combined Feature Extraction Call
+----------
+    var AlchemyAPI = require('alchemy-api');
+    var alchemy = new AlchemyAPI('<YOUR API KEY>');
+    alchemy.combined('<URL|HTML|TEXT>', ["FEATURE_NAME",...], {}, function(err, response) {
+      if (err) throw err;
+
+      // See http://www.alchemyapi.com/api/combined-call/ for format of returned object.
+      // Each feature response will be available as a separate property.
+      var feature_response = response.FEATURE_NAME; 
+
+      // Do something with data
+    });
+
+API Key Information
+----------
+    var AlchemyAPI = require('alchemy-api');
+    var alchemy = new AlchemyAPI('<YOUR API KEY>');
+    alchemy.apiKeyInfo({}, function(err, response) {
+      if (err) throw err;
+
+      // Do something with data
+      console.log('Status:', response.status, 'Consumed:', response.consumedDailyTransactions, 'Limit:', response.dailyTransactionLimit);
+      
     });
